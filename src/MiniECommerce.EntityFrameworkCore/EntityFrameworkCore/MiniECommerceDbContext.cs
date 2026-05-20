@@ -12,6 +12,7 @@ using Volo.Abp.Identity.EntityFrameworkCore;
 using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
+using MiniECommerce.Categories;
 
 namespace MiniECommerce.EntityFrameworkCore;
 
@@ -22,7 +23,7 @@ public class MiniECommerceDbContext :
     IIdentityDbContext
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
-
+    public DbSet<Category> Categories { get; set; }
 
     #region Entities from the modules
 
@@ -69,14 +70,26 @@ public class MiniECommerceDbContext :
         builder.ConfigureIdentity();
         builder.ConfigureOpenIddict();
         builder.ConfigureBlobStoring();
-        
+
         /* Configure your own tables/entities inside here */
 
-        //builder.Entity<YourEntity>(b =>
-        //{
-        //    b.ToTable(MiniECommerceConsts.DbTablePrefix + "YourEntities", MiniECommerceConsts.DbSchema);
-        //    b.ConfigureByConvention(); //auto configure for the base class props
-        //    //...
-        //});
+        builder.Entity<Category>(c =>
+        {
+            c.ConfigureByConvention(); //auto configure for the base class props
+            
+            c.Property(c => c.Name)
+                .IsRequired();
+
+            c.HasIndex(c => c.Name)
+                .IsUnique();
+
+            c.HasOne(c => c.Parent)
+                .WithMany(c => c.Children)
+                .HasForeignKey(c => c.ParentId)
+                .OnDelete(DeleteBehavior.NoAction);
+
+            c.ToTable("Categories");
+
+        });
     }
 }
