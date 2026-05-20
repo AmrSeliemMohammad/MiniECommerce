@@ -1,0 +1,16 @@
+<Solution>
+    <Configurations>
+        <Platform Name="Any CPU" />
+    </Configurations>
+    <Folder Name="/src/">
+        <Project Path="src/MiniECommerce.Domain/MiniECommerce.Domain.csproj" />
+        <Project Path="src/MiniECommerce.Application/MiniECommerce.Application.csproj" />
+        <Project Path="src/MiniECommerce.EntityFrameworkCore/MiniECommerce.EntityFrameworkCore.csproj" />
+        <Project Path="src/MiniECommerce.Domain.Shared/MiniECommerce.Domain.Shared.csproj" />
+        <Project Path="src/MiniECommerce.Application.Contracts/MiniECommerce.Application.Contracts.csproj" />
+        <Project Path="src/MiniECommerce.HttpApi/MiniECommerce.HttpApi.csproj" />
+        <Project Path="src/MiniECommerce.HttpApi.Client/MiniECommerce.HttpApi.Client.csproj" />
+        <Project Path="src/MiniECommerce.HttpApi.Host/MiniECommerce.HttpApi.Host.csproj" />
+        <Project Path="src/MiniECommerce.DbMigrator/MiniECommerce.DbMigrator.csproj" />
+    </Folder>
+</Solution>
