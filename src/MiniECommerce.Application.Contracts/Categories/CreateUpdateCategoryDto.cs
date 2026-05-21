@@ -1,11 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using Volo.Abp.Application.Dtos;
-
-namespace MiniECommerce.Categories
+﻿namespace MiniECommerce.Categories
 {
-    public class CreateUpdateCategoryDto : EntityDto<int>
+    // I don't inherit from EntityDto here because I don't need the id.
+    public class CreateUpdateCategoryDto
     {
         public string Name { get; set; }
         public string Description { get; set; }
