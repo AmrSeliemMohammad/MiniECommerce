@@ -13,6 +13,7 @@ using Volo.Abp.PermissionManagement.EntityFrameworkCore;
 using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using MiniECommerce.Categories;
+using MiniECommerce.Products;
 
 namespace MiniECommerce.EntityFrameworkCore;
 
@@ -24,6 +25,7 @@ public class MiniECommerceDbContext :
 {
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
     public DbSet<Category> Categories { get; set; }
+    public DbSet<Product> Products { get; set; }
 
     #region Entities from the modules
 
@@ -89,6 +91,31 @@ public class MiniECommerceDbContext :
                 .OnDelete(DeleteBehavior.NoAction);
 
             c.ToTable("Categories");
+
+        });
+
+        builder.Entity<Product>(p =>
+        {
+            p.ConfigureByConvention(); 
+
+            p.Property(p => p.NameEn)
+                .IsRequired();
+
+            p.Property(p => p.NameAr)
+                .IsRequired();
+
+            p.Property(p => p.Price)
+                .IsRequired();
+
+            p.Property(p => p.StockQuantity)
+                .IsRequired();
+
+            p.HasOne(p => p.Category)
+                .WithMany()
+                .HasForeignKey(p => p.CategoryId)
+                .IsRequired();
+
+            p.ToTable("Products");
 
         });
     }
