@@ -14,6 +14,7 @@ using Volo.Abp.SettingManagement.EntityFrameworkCore;
 using Volo.Abp.OpenIddict.EntityFrameworkCore;
 using MiniECommerce.Categories;
 using MiniECommerce.Products;
+using MiniECommerce.Orders;
 
 namespace MiniECommerce.EntityFrameworkCore;
 
@@ -26,6 +27,8 @@ public class MiniECommerceDbContext :
     /* Add DbSet properties for your Aggregate Roots / Entities here. */
     public DbSet<Category> Categories { get; set; }
     public DbSet<Product> Products { get; set; }
+    public DbSet<Order> Orders { get; set; }
+    public DbSet<OrderItem> OrderItems { get; set; }
 
     #region Entities from the modules
 
@@ -78,7 +81,7 @@ public class MiniECommerceDbContext :
         builder.Entity<Category>(c =>
         {
             c.ConfigureByConvention(); //auto configure for the base class props
-            
+
             c.Property(c => c.Name)
                 .IsRequired();
 
@@ -96,7 +99,7 @@ public class MiniECommerceDbContext :
 
         builder.Entity<Product>(p =>
         {
-            p.ConfigureByConvention(); 
+            p.ConfigureByConvention();
 
             p.Property(p => p.NameEn)
                 .IsRequired();
@@ -117,6 +120,32 @@ public class MiniECommerceDbContext :
 
             p.ToTable("Products");
 
+        });
+
+        builder.Entity<OrderItem>(oi =>
+        {
+            oi.ConfigureByConvention();
+            oi.Property(oi => oi.Quantity)
+                .IsRequired();
+
+            oi.HasOne(oi => oi.Product)
+                .WithMany()
+                .HasForeignKey(oi => oi.ProductId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Restrict);
+
+            oi.ToTable("OrderItems");
+        });
+
+        builder.Entity<Order>(o =>
+        {
+            o.ConfigureByConvention();        
+            o.HasMany(o => o.Items)
+                .WithOne(x => x.Order)
+                .HasForeignKey(x => x.OrderId)
+                .IsRequired()
+                .OnDelete(DeleteBehavior.Cascade);
+            o.ToTable("Orders");
         });
     }
 }

@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Text;
-using System.Xml.Linq;
 
 namespace MiniECommerce.Products
 {
@@ -17,7 +15,6 @@ namespace MiniECommerce.Products
         public decimal Price { get; set; }
         [Range(0, int.MaxValue)]
         public int StockQuantity { get; set; }
-        public int CategoryId { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
