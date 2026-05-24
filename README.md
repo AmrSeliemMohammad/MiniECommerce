@@ -61,5 +61,17 @@ You can see the following resources to learn more about your solution and the AB
 
 ### Default Users Credentials
 Admin user
+
 email: admin@abp.io
+
 password: 1q2w3E*
+
+### APIs Overview
+* `POST /api/app/categories`: Used to create new category with its products.
+* `GET /api/app/categories`: Used to retreive categories list.
+* `PUT /api/app/categories/{id}`: Used to update certain category with its products using its id.
+* `DELETE /api/app/categories/{id}`: Used to delete certain category with its products using its id.
+* `GET /api/app/categories/{id}`: Used to retreive certain category details with its products using its id.
+* `GET /api/app/orders`: Used to retreive orders list.
+* `POST /api/app/orders`: Used to create new order.
+* `GET /api/app/orders/{id}`: Used to retreive certain order using its id.
