@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using MiniECommerce.Categories;
 using MiniECommerce.Orders;
+using System.Linq;
 using Volo.Abp.AuditLogging.EntityFrameworkCore;
 using Volo.Abp.BackgroundJobs.EntityFrameworkCore;
 using Volo.Abp.BlobStoring.Database.EntityFrameworkCore;
@@ -64,7 +66,11 @@ public class MiniECommerceEntityFrameworkCoreModule : AbpModule
             options.Entity<Order>(orderOptions =>
             {
                 orderOptions.DefaultWithDetailsFunc = query => query.Include(o => o.Items).ThenInclude(i => i.Product);
-            });        
+            });
+            options.Entity<Category>(categoryOptions =>
+            {
+                categoryOptions.DefaultWithDetailsFunc = query => query.Include(c => c.Products).Include(c => c.Children);
+            });
         });
 
     }

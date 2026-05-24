@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using MiniECommerce.Categories;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace MiniECommerce.Mappings
 {
@@ -10,7 +8,8 @@ namespace MiniECommerce.Mappings
     {
         public CategoryMappingProfile()
         {
-            CreateMap<Category, CategoryDto>();
+            CreateMap<Category, CategoryDto>()
+                .ForMember(dest => dest.ChildrenIds, opt => opt.MapFrom(src => src.Children.Select(ch => ch.Id)));
             CreateMap<CreateUpdateCategoryDto, Category>();
         }
     }

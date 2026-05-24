@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Volo.Abp.Application.Dtos;
 
 namespace MiniECommerce.Products
 {
-    public class CreateUpdateProductDto : IValidatableObject
+    public class CreateUpdateProductDto : EntityDto<int>, IValidatableObject 
     {
         [Required]
         public string NameAr { get; set; }
@@ -12,8 +13,10 @@ namespace MiniECommerce.Products
         public string NameEn { get; set; }
         public string DescriptionAr { get; set; }
         public string DescriptionEn { get; set; }
+        [Required]
         public decimal Price { get; set; }
-        [Range(0, int.MaxValue)]
+        [Required]
+        [Range(0, int.MaxValue, ErrorMessage = "Stock cannot be negative")]
         public int StockQuantity { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)

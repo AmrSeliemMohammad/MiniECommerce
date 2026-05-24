@@ -93,6 +93,11 @@ public class MiniECommerceDbContext :
                 .HasForeignKey(c => c.ParentId)
                 .OnDelete(DeleteBehavior.NoAction);
 
+            c.HasMany(c => c.Products)
+                .WithOne(p => p.Category)
+                .HasForeignKey(p => p.CategoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
             c.ToTable("Categories");
 
         });
@@ -104,18 +109,19 @@ public class MiniECommerceDbContext :
             p.Property(p => p.NameEn)
                 .IsRequired();
 
+            p.HasIndex(p => p.NameEn)
+                .IsUnique();
+
             p.Property(p => p.NameAr)
                 .IsRequired();
+
+            p.HasIndex(p => p.NameAr)
+                .IsUnique();
 
             p.Property(p => p.Price)
                 .IsRequired();
 
             p.Property(p => p.StockQuantity)
-                .IsRequired();
-
-            p.HasOne(p => p.Category)
-                .WithMany()
-                .HasForeignKey(p => p.CategoryId)
                 .IsRequired();
 
             p.ToTable("Products");
@@ -141,8 +147,8 @@ public class MiniECommerceDbContext :
         {
             o.ConfigureByConvention();        
             o.HasMany(o => o.Items)
-                .WithOne(x => x.Order)
-                .HasForeignKey(x => x.OrderId)
+                .WithOne(i => i.Order)
+                .HasForeignKey(i => i.OrderId)
                 .IsRequired()
                 .OnDelete(DeleteBehavior.Cascade);
             o.ToTable("Orders");

@@ -1,10 +1,14 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Volo.Abp.Application.Dtos;
-using Volo.Abp.Application.Services;
 
 namespace MiniECommerce.Orders
 {
-    public interface IOrdersAppService : ICrudAppService<OrderDto, Guid, PagedAndSortedResultRequestDto, CreateUpdateOrderDto>
+    public interface IOrdersAppService
     {
+        Task<Guid> CreateAsync(CreateUpdateOrderDto input);
+        Task<OrderDto> GetAsync(Guid id);
+        Task<PagedResultDto<OrderDto>> GetListAsync(PagedAndSortedResultRequestDto input);
+
     }
 }
