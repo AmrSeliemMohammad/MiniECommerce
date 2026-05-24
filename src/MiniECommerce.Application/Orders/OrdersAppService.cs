@@ -8,6 +8,7 @@ using Volo.Abp.Application.Dtos;
 using Volo.Abp.Application.Services;
 using Volo.Abp.Domain.Entities;
 using Volo.Abp.Domain.Repositories;
+using Volo.Abp.EventBus.Distributed;
 using Volo.Abp.Users;
 
 namespace MiniECommerce.Orders
@@ -18,11 +19,13 @@ namespace MiniECommerce.Orders
         private readonly IRepository<Order, Guid> _orderRepository;
         private readonly IRepository<Product, int> _productRepository;
         private readonly ICurrentUser _currentUser;
-        public OrdersAppService(IRepository<Order, Guid> orderRepository, ICurrentUser user, IRepository<Product, int> productRepository)
+        private readonly IDistributedEventBus _distributedEventBus;
+        public OrdersAppService(IRepository<Order, Guid> orderRepository, ICurrentUser user, IRepository<Product, int> productRepository, IDistributedEventBus distributedEventBus)
         {
             _orderRepository = orderRepository;
             _currentUser = user;
             _productRepository = productRepository;
+            _distributedEventBus = distributedEventBus;
         }
         public async Task<PagedResultDto<OrderDto>> GetListAsync(PagedAndSortedResultRequestDto input)
         {
@@ -64,6 +67,15 @@ namespace MiniECommerce.Orders
              });    
             var order = ObjectMapper.Map<CreateUpdateOrderDto, Order>(input);
             order = await _orderRepository.InsertAsync(order);
+
+            await _distributedEventBus.PublishAsync(
+                input.Items.Select(i => new StockCountChangedEvent
+                {
+                    ProductId = i.ProductId,
+                    OrderQuantity = i.Quantity
+                })
+            );
+
             return order.Id;
         }
 
