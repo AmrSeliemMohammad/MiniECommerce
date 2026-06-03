@@ -13,5 +13,10 @@ namespace MiniECommerce.Products
         public int StockQuantity { get; set; }
         public int CategoryId { get; set; }
         public virtual Category Category { get; set; }
+
+        public Product(int id)
+        {
+            Id = id;
+        }
     }
 }

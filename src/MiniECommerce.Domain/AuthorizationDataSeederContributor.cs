@@ -18,7 +18,7 @@ namespace MiniECommerce
         private readonly IGuidGenerator _guidGenerator;
         private readonly ILookupNormalizer _lookupNormalizer;
 
-        public AuthorizationDataSeederContributor(IIdentityRoleRepository roleRepository, IdentityRoleManager roleManager, IGuidGenerator guidGenerator, ILookupNormalizer lookupNormalizer)
+        public AuthorizationDataSeederContributor(IIdentityRoleRepository roleRepository, IGuidGenerator guidGenerator, ILookupNormalizer lookupNormalizer)
         {
             _roleRepository = roleRepository;
             _guidGenerator = guidGenerator;
