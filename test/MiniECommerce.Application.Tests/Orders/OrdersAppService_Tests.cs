@@ -241,12 +241,15 @@ namespace MiniECommerce.Orders
             _fakeOrderRepository.InsertAsync(Arg.Any<Order>())
                 .Returns(order);
 
+            _fakeDistributedEventBus.PublishAsync(Arg.Any<IEnumerable<StockCountChangedEvent>>()).Returns(Task.CompletedTask);
+
             // Act
             var orderId = await _ordersAppService.CreateAsync(createUpdateOrderDto);
 
             // Assert
             await _fakeProductRepository.Received(1).GetListAsync(Arg.Any<Expression<Func<Product, bool>>>());
             await _fakeOrderRepository.Received(1).InsertAsync(Arg.Any<Order>());
+            await _fakeDistributedEventBus.Received(1).PublishAsync(Arg.Any<IEnumerable<StockCountChangedEvent>>());
             orderId.ShouldBe(order.Id);
         }
 
